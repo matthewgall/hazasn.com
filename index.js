@@ -33,7 +33,7 @@ async function refreshData() {
 router.get("/", async (request) => {
     let asndb = await refreshData();
     let output = {
-        'asn': `AS${request.cf.asn}`,
+        'asn': request.cf.asn,
         'name': asndb[request.cf.asn] || 'UNKNOWN'
     };
     return new Response(JSON.stringify(output), {
