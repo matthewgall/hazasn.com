@@ -1,0 +1,6 @@
+name = "canhazasn-dev"
+type = "webpack"
+
+account_id = "b0d7b9f87b57470ef508f1a511093cae"
+workers_dev = true
+kv-namespaces = [{binding = "KV", id = "cb9803eb75f5479ba954217669e20401", preview_id = "cb9803eb75f5479ba954217669e20401"}]
