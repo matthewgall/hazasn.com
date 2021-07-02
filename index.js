@@ -13,7 +13,7 @@ async function refreshData() {
     if (data !== null) {
         return JSON.parse(data)
     }
-    
+
     data = await fetch("https://asndb.network/get/latest/asn.json", {
         cf: {
             cacheTtl: 86400,
@@ -23,14 +23,14 @@ async function refreshData() {
     data = await data.json();
 
     // Now to save it
-    await KV.put('asnData', JSON.stringify(data), {expirationTtl: 86400})
+    await KV.put('asnData', JSON.stringify(data), { expirationTtl: 86400 })
     return data
 }
 
 /**
  * ROUTES
  */
-router.get("/", async (request) => {
+router.get("/", async(request) => {
     let asndb = await refreshData();
     let output = {
         'asn': request.cf.asn,
@@ -38,7 +38,10 @@ router.get("/", async (request) => {
     };
     return new Response(JSON.stringify(output), {
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, cf-access-client-id, cf-access-client-secret'
         }
     });
 })
@@ -52,7 +55,7 @@ router.all("*", () => new Response("404, not found!", { status: 404 }))
  * EVENT LISTENERS
  */
 addEventListener('fetch', (e) => {
-  e.respondWith(router.handle(e.request))
+    e.respondWith(router.handle(e.request))
 })
 
 addEventListener("scheduled", event => {
